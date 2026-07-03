@@ -13,8 +13,30 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "دار الوسم العقارية",
-  description: "نساعدك في الوصول للعقار بكل سهولة",
+  title: "دار وسم العقارية",
+  description:
+    "تسويق الأراضي • بيع وشراء • عقود إلكترونية • استشارات عقارية",
+
+  openGraph: {
+    title: "دار وسم العقارية",
+    description:
+      "تسويق الأراضي • بيع وشراء • عقود إلكترونية • استشارات عقارية",
+    images: ["/assets/og-image.png"],
+    type: "website",
+    locale: "ar_SA",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "دار وسم العقارية",
+    description:
+      "تسويق الأراضي • بيع وشراء • عقود إلكترونية • استشارات عقارية",
+    images: ["/assets/og-image.png"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -24,7 +46,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ar"
+      dir="rtl"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
