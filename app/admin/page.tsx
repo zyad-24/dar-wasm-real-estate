@@ -265,7 +265,7 @@ export default function AdminPage() {
             />
 
             <div>
-              <p className="mb-3 font-bold text-[#d6a642]">صور العقار</p>
+              <p className="mb-3 font-bold text-[#d6a642]">مرفقات الإعلان</p>
 
               <div className="grid grid-cols-3 gap-3">
                 {existingImages.map((image, index) => (
@@ -299,11 +299,11 @@ export default function AdminPage() {
                 ))}
 
                 <label className="flex h-24 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#d6a642]/60 bg-[#0d2b36] text-center text-sm text-[#d6a642]">
-                  + إضافة صور
+                  + إضافة مرفقات
                   <input
                     type="file"
                     multiple
-                    accept="image/*"
+                    accept="image/*,video/*"
                     onChange={(e) => addFiles(e.target.files)}
                     className="hidden"
                   />
