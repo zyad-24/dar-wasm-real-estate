@@ -16,9 +16,7 @@ export default function PropertyActions({
 
 ${title}
 
-رقم الإعلان: ${adNumber}
-
-${adUrl}`;
+رقم الإعلان: ${adNumber}`;
 
     if (navigator.share) {
       await navigator.share({
@@ -27,7 +25,9 @@ ${adUrl}`;
         url: adUrl,
       });
     } else {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(`${shareText}
+
+${adUrl}`);
       alert("تم نسخ رابط الإعلان");
     }
   }
