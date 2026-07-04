@@ -3,19 +3,28 @@
 type PropertyActionsProps = {
   title: string;
   adNumber: string;
+  adUrl: string;
 };
 
-export default function PropertyActions({ title, adNumber }: PropertyActionsProps) {
-  const url = typeof window !== "undefined" ? window.location.href : "";
-
+export default function PropertyActions({
+  title,
+  adNumber,
+  adUrl,
+}: PropertyActionsProps) {
   async function shareAd() {
-    const shareText = `${title}\nرقم الإعلان: ${adNumber}\n${url}`;
+    const shareText = `دار وسم العقارية
+
+${title}
+
+رقم الإعلان: ${adNumber}
+
+${adUrl}`;
 
     if (navigator.share) {
       await navigator.share({
         title,
         text: shareText,
-        url,
+        url: adUrl,
       });
     } else {
       await navigator.clipboard.writeText(shareText);
@@ -24,7 +33,11 @@ export default function PropertyActions({ title, adNumber }: PropertyActionsProp
   }
 
   const whatsappMessage = encodeURIComponent(
-    `السلام عليكم، أستفسر عن الإعلان هذا:\n\nرقم الإعلان: ${adNumber}\nعنوان الإعلان: ${title}\nرابط الإعلان: ${url}`
+    `السلام عليكم، أستفسر عن الإعلان هذا:
+
+رقم الإعلان: ${adNumber}
+عنوان الإعلان: ${title}
+رابط الإعلان: ${adUrl}`
   );
 
   return (
