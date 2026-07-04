@@ -18,6 +18,7 @@ export default function PropertyCard({
 }: PropertyCardProps) {
   const validImages = Array.isArray(images) ? images : [];
   const coverImage = validImages[0] || null;
+  const adNumber = `DW-${1000 + id}`;
 
   return (
     <div className="overflow-hidden rounded-3xl border border-[#d6a642]/30 bg-white/5 shadow-2xl backdrop-blur">
@@ -25,15 +26,19 @@ export default function PropertyCard({
         {title}
       </h2>
 
-      <div className="mt-3 flex justify-center gap-2">
-        <span className="rounded-full border border-[#d6a642] px-4 py-1 text-sm text-[#d6a642]">
+      <p className="mt-2 text-center text-sm font-bold text-white/50">
+        رقم الإعلان: {adNumber}
+      </p>
+
+      <div className="mt-4 flex flex-wrap justify-center gap-2 px-4">
+        <span className="rounded-full border border-[#d6a642]/60 bg-transparent px-4 py-1 text-sm font-bold text-[#d6a642]">
           {type}
         </span>
 
         {operations?.map((operation) => (
           <span
             key={operation}
-            className="rounded-full bg-[#d6a642] px-3 py-1 text-sm font-bold text-[#061d26]"
+            className="rounded-full border border-[#d6a642]/60 bg-transparent px-4 py-1 text-sm font-bold text-[#d6a642]"
           >
             {operation}
           </span>
@@ -46,7 +51,7 @@ export default function PropertyCard({
             src={coverImage}
             alt={title}
             fill
-            sizes="(max-width:768px)100vw,400px"
+            sizes="(max-width: 768px) 100vw, 400px"
             className="object-cover"
           />
         ) : (
@@ -56,10 +61,10 @@ export default function PropertyCard({
         )}
       </div>
 
-      <div className="p-5 pt-0">
+      <div className="px-5 pb-5">
         <Link
           href={`/property/${id}`}
-          className="block rounded-2xl bg-[#d6a642] py-4 text-center text-lg font-bold text-[#061d26]"
+          className="mx-auto block max-w-[240px] rounded-2xl bg-[#d6a642] py-3 text-center text-base font-bold text-[#061d26]"
         >
           عرض الإعلان
         </Link>

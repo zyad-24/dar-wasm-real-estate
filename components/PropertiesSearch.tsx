@@ -18,7 +18,7 @@ type Props = {
 };
 
 const propertyTypes = ["الكل", "أرض", "شقة", "فيلا", "عمارة"];
-const operationTypes = ["الكل", "بيع", "إيجار", "استثمار"];
+const operationTypes = ["الكل", "بيع", "إيجار"];
 
 export default function PropertiesSearch({ properties }: Props) {
   const [selectedType, setSelectedType] = useState("الكل");
@@ -40,19 +40,19 @@ export default function PropertiesSearch({ properties }: Props) {
   return (
     <>
       <div className="mb-5">
-        <p className="mb-3 text-center text-sm text-white/60">
-          اختر نوع العقار
+        <p className="mb-2 text-right text-sm font-bold text-[#d6a642]">
+          العقار
         </p>
 
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2">
           {propertyTypes.map((type) => (
             <button
               key={type}
               onClick={() => setSelectedType(type)}
-              className={`min-w-fit rounded-full border px-5 py-3 text-sm font-bold transition ${
+              className={`min-w-fit rounded-full border px-5 py-2.5 text-sm font-bold transition ${
                 selectedType === type
                   ? "border-[#d6a642] bg-[#d6a642] text-[#061d26]"
-                  : "border-[#d6a642]/30 bg-white/5 text-white/80"
+                  : "border-[#d6a642]/40 bg-white/5 text-white/80"
               }`}
             >
               {type}
@@ -62,19 +62,19 @@ export default function PropertiesSearch({ properties }: Props) {
       </div>
 
       <div className="mb-6">
-        <p className="mb-3 text-center text-sm text-white/60">
-          اختر نوع العملية
+        <p className="mb-2 text-right text-sm font-bold text-[#d6a642]">
+          العملية
         </p>
 
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2">
           {operationTypes.map((operation) => (
             <button
               key={operation}
               onClick={() => setSelectedOperation(operation)}
-              className={`min-w-fit rounded-full border px-5 py-3 text-sm font-bold transition ${
+              className={`min-w-fit rounded-full border px-5 py-2.5 text-sm font-bold transition ${
                 selectedOperation === operation
                   ? "border-[#d6a642] bg-[#d6a642] text-[#061d26]"
-                  : "border-[#d6a642]/30 bg-white/5 text-white/80"
+                  : "border-[#d6a642]/40 bg-white/5 text-white/80"
               }`}
             >
               {operation}
