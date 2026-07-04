@@ -9,6 +9,10 @@ type PropertyCardProps = {
   operations?: string[] | null;
 };
 
+function isVideo(url: string) {
+  return /\.(mp4|mov|webm|m4v)$/i.test(url.split("?")[0]);
+}
+
 export default function PropertyCard({
   id,
   type,
@@ -17,7 +21,8 @@ export default function PropertyCard({
   operations,
 }: PropertyCardProps) {
   const validImages = Array.isArray(images) ? images : [];
-  const coverImage = validImages[0] || null;
+  const coverMedia = validImages[0] || null;
+  const coverIsVideo = coverMedia ? isVideo(coverMedia) : false;
   const adNumber = `DW-${1000 + id}`;
 
   return (
@@ -46,17 +51,27 @@ export default function PropertyCard({
       </div>
 
       <div className="relative mx-5 my-5 h-56 overflow-hidden rounded-2xl bg-black/30">
-        {coverImage ? (
-          <Image
-            src={coverImage}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, 400px"
-            className="object-cover"
-          />
+        {coverMedia ? (
+          coverIsVideo ? (
+            <video
+              src={coverMedia}
+              muted
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <Image
+              src={coverMedia}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, 400px"
+              className="object-cover"
+            />
+          )
         ) : (
           <div className="flex h-full items-center justify-center text-white/40">
-            لا توجد صورة
+            لا توجد مرفقات
           </div>
         )}
       </div>

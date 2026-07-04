@@ -46,7 +46,7 @@ export default function Home() {
         </h1>
 
         <p className="mb-8 max-w-sm text-lg leading-8 text-white/85">
-          نساعدك في الوصول للعقار المناسب بكل سهولة واحترافية
+          خبرة سنين في المجال العقاري
         </p>
 
         <div className="flex w-full max-w-xs flex-col gap-4">

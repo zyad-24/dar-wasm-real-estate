@@ -8,6 +8,10 @@ type ImageGalleryProps = {
   title: string;
 };
 
+function isVideo(url: string) {
+  return /\.(mp4|mov|webm|m4v)$/i.test(url.split("?")[0]);
+}
+
 export default function ImageGallery({ images, title }: ImageGalleryProps) {
   const [current, setCurrent] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
@@ -15,10 +19,13 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
   if (images.length === 0) {
     return (
       <div className="mb-6 flex h-72 items-center justify-center rounded-3xl bg-black/30 text-white/40">
-        لا توجد صورة
+        لا توجد مرفقات
       </div>
     );
   }
+
+  const currentUrl = images[current];
+  const currentIsVideo = isVideo(currentUrl);
 
   function nextImage() {
     setCurrent((prev) => (prev + 1) % images.length);
@@ -35,39 +42,75 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
         onClick={() => setIsOpen(true)}
         className="relative h-72 w-full overflow-hidden rounded-3xl bg-black/30"
       >
-        <Image
-          src={images[current]}
-          alt={title}
-          fill
-          sizes="(max-width: 768px) 100vw, 400px"
-          className="object-cover"
-          priority
-        />
+        {currentIsVideo ? (
+          <>
+            <video
+              src={currentUrl}
+              muted
+              playsInline
+              preload="metadata"
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+              <div className="rounded-full border border-[#d6a642] bg-black/50 px-6 py-3 font-bold text-[#d6a642]">
+                تشغيل الفيديو
+              </div>
+            </div>
+          </>
+        ) : (
+          <Image
+            src={currentUrl}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, 400px"
+            className="object-cover"
+            priority
+          />
+        )}
       </button>
 
       {images.length > 1 && (
         <>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
-            {images.map((image, index) => (
-              <button
-                key={image}
-                type="button"
-                onClick={() => setCurrent(index)}
-                className={`relative h-16 min-w-20 overflow-hidden rounded-xl border ${
-                  current === index
-                    ? "border-[#d6a642]"
-                    : "border-white/10"
-                }`}
-              >
-                <Image
-                  src={image}
-                  alt={`${title} ${index + 1}`}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              </button>
-            ))}
+            {images.map((item, index) => {
+              const video = isVideo(item);
+
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setCurrent(index)}
+                  className={`relative h-16 min-w-20 overflow-hidden rounded-xl border bg-black ${
+                    current === index ? "border-[#d6a642]" : "border-white/10"
+                  }`}
+                >
+                  {video ? (
+                    <>
+                      <video
+                        src={item}
+                        muted
+                        playsInline
+                        preload="metadata"
+                        className="h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <span className="rounded-full bg-black/60 px-2 py-1 text-xs font-bold text-[#d6a642]">
+                          فيديو
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <Image
+                      src={item}
+                      alt={`${title} ${index + 1}`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           <p className="mt-2 text-center text-sm text-white/60">
@@ -93,14 +136,23 @@ export default function ImageGallery({ images, title }: ImageGalleryProps) {
           </div>
 
           <div className="relative flex-1 overflow-hidden rounded-3xl">
-            <Image
-              src={images[current]}
-              alt={title}
-              fill
-              sizes="100vw"
-              className="object-contain"
-              priority
-            />
+            {currentIsVideo ? (
+              <video
+                src={currentUrl}
+                controls
+                playsInline
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <Image
+                src={currentUrl}
+                alt={title}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
+              />
+            )}
 
             {images.length > 1 && (
               <>
