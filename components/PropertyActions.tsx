@@ -21,8 +21,9 @@ ${title}
     if (navigator.share) {
       await navigator.share({
         title,
-        text: shareText,
-        url: adUrl,
+        text: `${shareText}
+
+${adUrl}`,
       });
     } else {
       await navigator.clipboard.writeText(`${shareText}
