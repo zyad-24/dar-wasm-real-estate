@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import SortableMedia from "@/components/admin/SortableMedia";
 
 type Property = {
   id: number;
@@ -15,8 +16,10 @@ type Property = {
 };
 
 type PreviewFile = {
+  id: string;
   file: File;
   url: string;
+  type: "image" | "video";
 };
 
 const operationOptions = ["بيع", "إيجار", "استثمار"];
@@ -58,16 +61,34 @@ export default function AdminPage() {
     if (!selectedFiles) return;
 
     const newFiles = Array.from(selectedFiles).map((file) => ({
-      file,
-      url: URL.createObjectURL(file),
-    }));
+  id: `${Date.now()}-${Math.random()}`,
+  file,
+  url: URL.createObjectURL(file),
+  type: file.type.startsWith("video/") ? "video" : "image",
+}));;
 
     setFiles((prev) => [...prev, ...newFiles]);
   }
 
   function removeNewImage(index: number) {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  }
+  setFiles((prev) => prev.filter((_, i) => i !== index));
+}
+
+function reorderNewFiles(
+  items: { id: string; url: string; type?: "image" | "video" }[]
+) {
+  setFiles((prev) =>
+    items
+      .map((item) => prev.find((file) => file.id === item.id))
+      .filter(Boolean) as PreviewFile[]
+  );
+}
+
+function reorderExistingImages(
+  items: { id: string; url: string; type?: "image" | "video" }[]
+) {
+  setExistingImages(items.map((item) => item.url));
+}
 
   function removeExistingImage(index: number) {
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
@@ -265,51 +286,49 @@ export default function AdminPage() {
             />
 
             <div>
-              <p className="mb-3 font-bold text-[#d6a642]">مرفقات الإعلان</p>
+  <p className="mb-3 font-bold text-[#d6a642]">مرفقات الإعلان</p>
 
-              <div className="grid grid-cols-3 gap-3">
-                {existingImages.map((image, index) => (
-                  <div
-                    key={index}
-                    className="relative h-24 rounded-2xl bg-cover bg-center"
-                    style={{ backgroundImage: `url(${image})` }}
-                  >
-                    <button
-                      onClick={() => removeExistingImage(index)}
-                      className="absolute right-1 top-1 rounded-full bg-red-500 px-2 text-sm"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
+  {existingImages.length > 0 && (
+    <SortableMedia
+      items={existingImages.map((image) => ({
+        id: image,
+        url: image,
+        type: image.match(/\.(mp4|mov|webm|m4v)$/i)
+          ? "video"
+          : "image",
+      }))}
+      onChange={reorderExistingImages}
+      onRemove={removeExistingImage}
+    />
+  )}
 
-                {files.map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative h-24 rounded-2xl bg-cover bg-center"
-                    style={{ backgroundImage: `url(${item.url})` }}
-                  >
-                    <button
-                      onClick={() => removeNewImage(index)}
-                      className="absolute right-1 top-1 rounded-full bg-red-500 px-2 text-sm"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
+  <div className="mt-4 grid grid-cols-3 gap-3">
+    <label className="flex h-24 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#d6a642]/60 bg-[#0d2b36] text-center text-sm text-[#d6a642]">
+      + إضافة مرفقات
+      <input
+        type="file"
+        multiple
+        accept="image/*,video/*"
+        onChange={(e) => addFiles(e.target.files)}
+        className="hidden"
+      />
+    </label>
+  </div>
 
-                <label className="flex h-24 cursor-pointer items-center justify-center rounded-2xl border border-dashed border-[#d6a642]/60 bg-[#0d2b36] text-center text-sm text-[#d6a642]">
-                  + إضافة مرفقات
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*,video/*"
-                    onChange={(e) => addFiles(e.target.files)}
-                    className="hidden"
-                  />
-                </label>
-              </div>
-            </div>
+  {files.length > 0 && (
+    <div className="mt-4">
+      <SortableMedia
+        items={files.map((item) => ({
+          id: item.id,
+          url: item.url,
+          type: item.type,
+        }))}
+        onChange={reorderNewFiles}
+        onRemove={removeNewImage}
+      />
+    </div>
+  )}
+</div>
 
             <button
               onClick={saveProperty}
