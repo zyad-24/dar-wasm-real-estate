@@ -60,12 +60,12 @@ export default function AdminPage() {
   function addFiles(selectedFiles: FileList | null) {
     if (!selectedFiles) return;
 
-    const newFiles = Array.from(selectedFiles).map((file) => ({
+    const newFiles: PreviewFile[] = Array.from(selectedFiles).map((file) => ({
   id: `${Date.now()}-${Math.random()}`,
   file,
   url: URL.createObjectURL(file),
   type: file.type.startsWith("video/") ? "video" : "image",
-}));;
+}));
 
     setFiles((prev) => [...prev, ...newFiles]);
   }
