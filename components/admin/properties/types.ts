@@ -6,6 +6,9 @@ export type Property = {
   images: string[] | null;
   operations: string[] | null;
   hidden: boolean;
+  contact_phone: string | null;
+  property_location_url: string | null;
+  show_location_button: boolean;
 };
 
 export type PreviewFile = {

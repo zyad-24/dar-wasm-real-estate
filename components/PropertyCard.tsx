@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Play } from "lucide-react";
 
 type PropertyCardProps = {
   id: number;
@@ -36,14 +37,14 @@ export default function PropertyCard({
       </p>
 
       <div className="mt-4 flex flex-wrap justify-center gap-2 px-4">
-        <span className="rounded-full border border-[#d6a642]/60 bg-transparent px-4 py-1 text-sm font-bold text-[#d6a642]">
+        <span className="rounded-full border border-[#d6a642]/60 px-4 py-1 text-sm font-bold text-[#d6a642]">
           {type}
         </span>
 
         {operations?.map((operation) => (
           <span
             key={operation}
-            className="rounded-full border border-[#d6a642]/60 bg-transparent px-4 py-1 text-sm font-bold text-[#d6a642]"
+            className="rounded-full border border-[#d6a642]/60 px-4 py-1 text-sm font-bold text-[#d6a642]"
           >
             {operation}
           </span>
@@ -53,13 +54,21 @@ export default function PropertyCard({
       <div className="relative mx-5 my-5 h-56 overflow-hidden rounded-2xl bg-black/30">
         {coverMedia ? (
           coverIsVideo ? (
-            <video
-              src={coverMedia}
-              muted
-              playsInline
-              preload="metadata"
-              className="h-full w-full object-cover"
-            />
+            <>
+              <video
+                src={`${coverMedia}#t=0.1`}
+                muted
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
+              />
+
+              <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 text-[#d6a642] backdrop-blur">
+                  <Play size={30} fill="currentColor" />
+                </div>
+              </div>
+            </>
           ) : (
             <Image
               src={coverMedia}

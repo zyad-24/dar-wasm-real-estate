@@ -19,6 +19,9 @@ export default function AdminPropertiesPage() {
   const [operations, setOperations] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
+  const [propertyLocationUrl, setPropertyLocationUrl] = useState("");
+  const [showLocationButton, setShowLocationButton] = useState(false);
   const [files, setFiles] = useState<PreviewFile[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -114,6 +117,22 @@ export default function AdminPropertiesPage() {
   async function saveProperty() {
     if (!title.trim()) return alert("اكتب عنوان الإعلان");
 
+    const cleanPhone = contactPhone.trim();
+
+    if (!/^05\d{8}$/.test(cleanPhone)) {
+      return alert("رقم التواصل يجب أن يكون 10 أرقام، يبدأ بـ 05، وبدون مسافات.");
+    }
+
+    const cleanLocationUrl = propertyLocationUrl.trim();
+
+    if (showLocationButton && !cleanLocationUrl) {
+      return alert("أضف رابط موقع العقار أو أغلق زر إظهار موقع العقار.");
+    }
+
+    if (showLocationButton && cleanLocationUrl.includes(" ")) {
+      return alert("رابط موقع العقار يجب أن يكون بدون مسافات.");
+    }
+
     setLoading(true);
 
     const uploadedImages = await uploadImages();
@@ -125,6 +144,9 @@ export default function AdminPropertiesPage() {
       description,
       images: finalImages,
       operations,
+      contact_phone: cleanPhone,
+      property_location_url: showLocationButton ? cleanLocationUrl : null,
+      show_location_button: showLocationButton,
     };
 
     const { error } = editingId
@@ -149,6 +171,9 @@ export default function AdminPropertiesPage() {
     setOperations([]);
     setTitle("");
     setDescription("");
+    setContactPhone("");
+    setPropertyLocationUrl("");
+    setShowLocationButton(false);
     setFiles([]);
     setExistingImages([]);
     setEditingId(null);
@@ -166,6 +191,9 @@ export default function AdminPropertiesPage() {
     setOperations(property.operations || []);
     setTitle(property.title);
     setDescription(property.description || "");
+    setContactPhone(property.contact_phone || "");
+    setPropertyLocationUrl(property.property_location_url || "");
+    setShowLocationButton(property.show_location_button || false);
     setExistingImages(property.images || []);
     setFiles([]);
     setMode("form");
@@ -239,6 +267,12 @@ export default function AdminPropertiesPage() {
             setTitle={setTitle}
             description={description}
             setDescription={setDescription}
+            contactPhone={contactPhone}
+            setContactPhone={setContactPhone}
+            propertyLocationUrl={propertyLocationUrl}
+            setPropertyLocationUrl={setPropertyLocationUrl}
+            showLocationButton={showLocationButton}
+            setShowLocationButton={setShowLocationButton}
             files={files}
             existingImages={existingImages}
             addFiles={addFiles}
