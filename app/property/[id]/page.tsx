@@ -23,9 +23,9 @@ export default async function PropertyDetails({ params }: PageProps) {
 
   const images = property.images || [];
   const adNumber = `DW-${1000 + Number(id)}`;
-
-  // رابط الإعلان المباشر
   const adUrl = `https://dar-wasm-real-estate.vercel.app/property/${id}`;
+
+  const contactPhone = property.contact_phone || "0504884434";
 
   return (
     <main dir="rtl" className="min-h-screen bg-[#061d26] px-5 py-8 text-white">
@@ -67,6 +67,9 @@ export default async function PropertyDetails({ params }: PageProps) {
           title={property.title}
           adNumber={adNumber}
           adUrl={adUrl}
+          contactPhone={contactPhone}
+          propertyLocationUrl={property.property_location_url}
+          showLocationButton={property.show_location_button}
         />
       </div>
     </main>
