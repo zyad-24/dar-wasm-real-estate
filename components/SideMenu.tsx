@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   BriefcaseBusiness,
   Home,
+  LayoutDashboard,
   MapPinned,
   Menu,
   MessageSquareQuote,
@@ -73,7 +74,7 @@ export default function SideMenu() {
           <p className="text-sm font-bold text-[#d6a642]">العقارية</p>
         </div>
 
-        <nav className="space-y-2 pb-24">
+        <nav className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
 
@@ -95,7 +96,20 @@ export default function SideMenu() {
           })}
         </nav>
 
-        <div className="pb-4 text-center text-xs text-white/45">
+        <div className="mt-6">
+          <div className="mx-auto mb-4 h-px w-32 bg-[#d6a642]/30" />
+
+          <Link
+            href="/admin/login"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-3 rounded-2xl border border-[#d6a642]/35 bg-[#d6a642]/10 px-4 py-3 text-base font-bold text-[#d6a642] transition hover:bg-[#d6a642]/20 active:scale-[0.98]"
+          >
+            <LayoutDashboard size={22} strokeWidth={2} />
+            <span>الإدارة</span>
+          </Link>
+        </div>
+
+        <div className="mt-6 pb-4 text-center text-xs text-white/45">
           <div className="mx-auto mb-3 h-px w-32 bg-[#d6a642]/30" />
           <p>الإصدار 2.0</p>
           <p className="mt-1">© دار وسم العقارية</p>
